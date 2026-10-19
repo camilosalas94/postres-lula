@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Postres Lula — Pedidos</title>
+<meta name="theme-color" content="#3B2418">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Postres Lula">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--cocoa:#3B2418;--cream:#FFF8F2;--accent:#A4521C;--muted:#6B5243;--line:#EADBCF;--sand:#F3E6DB;--ok:#1F5A2B;--okbg:#E3F1E5}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--cocoa)}
+body{font-family:'Nunito Sans',system-ui,sans-serif;color:var(--cocoa);display:flex;justify-content:center}
+#app{width:100%;max-width:480px;height:100dvh;display:flex;flex-direction:column;background:var(--cream);overflow:hidden}
+header{display:flex;align-items:center;gap:12px;padding:calc(14px + env(safe-area-inset-top)) 16px 14px;background:var(--cocoa);color:var(--cream);flex-shrink:0}
+.back{width:44px;height:44px;border:none;background:transparent;color:var(--cream);display:flex;align-items:center;justify-content:center;margin-left:-8px;cursor:pointer;padding:0}
+.avatar{width:44px;height:44px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:20px;color:#fff;flex-shrink:0}
+.hname{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:17px}
+.hsub{font-size:13px;color:#EBD9CC}
+main{flex:1;overflow-y:auto;padding:20px 16px;display:flex;flex-direction:column;gap:12px}
+h1{margin:0;font-family:'Bricolage Grotesque',sans-serif;font-size:26px}
+.lead{margin:0;font-size:14px;color:var(--muted);line-height:1.45}
+.bubble{max-width:300px;background:#fff;border:1px solid var(--line);border-radius:4px 18px 18px 18px;padding:14px 16px;font-size:15px;line-height:1.5}
+.day{align-self:center;font-size:12px;color:var(--muted);background:var(--sand);padding:4px 12px;border-radius:999px}
+.btn{min-height:52px;border-radius:14px;border:2px solid var(--accent);background:var(--accent);color:#fff;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;padding:0 16px}
+.btn.alt{background:#fff;color:var(--accent)}
+.btn.dark{background:var(--cocoa);border-color:var(--cocoa);color:var(--cream);width:100%}
+.card{display:flex;gap:12px;padding:12px;background:#fff;border:1px solid var(--line);border-radius:16px;align-items:center}
+.photo{width:92px;height:92px;flex-shrink:0;border-radius:12px;background:var(--sand);border:1px dashed #C9AE9A;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--muted);font-size:11px;overflow:hidden}
+.photo img{width:100%;height:100%;object-fit:cover}
+.info{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}
+.pname{font-weight:700;font-size:16px}
+.small{font-size:13px;color:var(--muted);line-height:1.4}
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.chip{font-size:13px;font-weight:700;padding:5px 10px;border-radius:999px;white-space:nowrap}
+.chip.ok{color:var(--ok);background:var(--okbg)}
+.chip.no{color:#5E5550;background:#ECE7E4}
+.add{min-height:44px;padding:0 16px;border-radius:12px;border:none;background:var(--accent);color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+.step{width:44px;height:44px;border-radius:12px;border:2px solid var(--accent);background:#fff;color:var(--accent);font-size:20px;font-weight:700;cursor:pointer}
+.step.plus{background:var(--accent);color:#fff;border:none}
+.box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.line{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--sand);font-size:15px}
+.tip{display:flex;gap:10px;font-size:14px;line-height:1.45}
+.tips{display:flex;flex-direction:column;gap:10px;background:var(--sand);border-radius:16px;padding:14px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.pill{min-height:52px;border-radius:14px;border:2px solid #C9AE9A;background:#fff;color:var(--cocoa);font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+.pill.on{border-color:var(--accent);background:var(--accent);color:#fff}
+.status{display:flex;align-items:center;gap:12px;font-size:15px}
+.dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;border:2px solid #C9AE9A;color:var(--muted)}
+.dot.done{background:var(--ok);border-color:var(--ok);color:#fff}
+.dot.now{border-color:var(--accent);color:var(--accent)}
+footer{padding:12px 16px calc(18px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--cream);flex-shrink:0}
+.check{align-self:center;width:76px;height:76px;border-radius:50%;background:var(--okbg);display:flex;align-items:center;justify-content:center;margin-top:8px}
+.center{text-align:center}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+// ====== DATOS DEL NEGOCIO (editar aquí precios, porciones y fotos) ======
+const PRODUCTS = [
+  { id:'leche',     name:'Leche asada',          desc:'Nuestra receta tradicional.',                       porcion:'[porción]',   precio:'$ [precio]', hoy:false, foto:'' },
+  { id:'merengon',  name:'Merengón Lula',        desc:'El merengón de la casa.',                           porcion:'[porción]',   precio:'$ [precio]', hoy:true,  foto:'' },
+  { id:'chocolate', name:'Torta de chocolate',   desc:'Rellena de arequipe. Presentación de media libra.', porcion:'media libra', precio:'$ [precio]', hoy:true,  foto:'' },
+  { id:'melocoton', name:'Postre de melocotón',  desc:'Con fruta natural, sin colorantes artificiales.',    porcion:'[porción]',   precio:'$ [precio]', hoy:true,  foto:'' },
+  { id:'oreo',      name:'Postre de Oreo',       desc:'Nuestro lanzamiento más reciente.',                 porcion:'[porción]',   precio:'$ [precio]', hoy:true,  foto:'' },
+  { id:'cafe',      name:'Café',                 desc:'Para acompañar tu postre.',                         porcion:'[tamaño]',    precio:'$ [precio]', hoy:true,  foto:'' }
+];
+const NEGOCIO = {
+  horario: 'Jueves a martes, 9:30 a. m. a 6:30 p. m.',
+  ubicacion: 'Km 5 vía Tunja–Paipa',
+  tiempo: '[tiempo]',
+  pago: '[contra entrega / transferencia]',
+  anticipacion: '[N]',
+  cobertura: '[zona de cobertura]',
+  domicilio: '$ [valor del domicilio]',
+  total: '$ [total]'
+};
+// =======================================================================
+
+const S = { screen:'chat', cart:{}, entrega:'recoger' };
+const ic = {
+  back:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>',
+  clock:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+  card:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg>',
+  cal:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg>',
+  cam:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>',
+  ok:'<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#1F5A2B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>'
+};
+const count = () => Object.values(S.cart).reduce((a,b)=>a+b,0);
+const photo = p => `<div class="photo">${p.foto ? `<img src="${p.foto}" alt="${p.name}">` : ic.cam + '<span>Foto real</span>'}</div>`;
+
+function screens(){
+  const s = S.screen;
+  if (s === 'chat') return `
+    <div class="day">Hoy</div>
+    <div class="bubble">¡Hola! Bienvenido a Café y Postres Lula. Hacemos postres artesanales con fruta natural, sin colorantes ni preservativos. ¿Qué quieres hacer?</div>
+    <div class="bubble tip" style="font-size:14px">${ic.clock}<span>${NEGOCIO.horario}<br>${NEGOCIO.ubicacion}</span></div>
+    <button class="btn" data-go="hoy">Ver lo disponible hoy</button>
+    <button class="btn alt" data-go="catalogo">Ver catálogo con precios</button>
+    <button class="btn alt" data-go="info">Cómo pago y cuándo llega</button>`;
+  if (s === 'hoy') return `
+    <h1>Disponible hoy</h1>
+    <p class="lead">Actualizado hoy. Lo que está agotado no se puede pedir, así no pierdes tu tiempo.</p>
+    ${PRODUCTS.map(p=>`<div class="card"><div class="info"><div class="pname">${p.name}</div><div class="small">${p.precio} · ${p.porcion}</div></div>${p.hoy?'<span class="chip ok">Disponible</span>':'<span class="chip no">Agotado hoy</span>'}</div>`).join('')}
+    <button class="btn" data-go="catalogo">Armar mi pedido</button>`;
+  if (s === 'catalogo') return `
+    <h1>Catálogo</h1>
+    <p class="lead">Fotos reales de nuestros postres. El precio que ves es el que pagas.</p>
+    ${PRODUCTS.map(p=>{
+      const q = S.cart[p.id]||0;
+      const action = !p.hoy ? '<span class="chip no">Agotado hoy</span>'
+        : q===0 ? `<button class="add" data-add="${p.id}">Agregar</button>`
+        : `<div style="display:flex;align-items:center;gap:6px"><button class="step" data-sub="${p.id}" aria-label="Quitar uno">−</button><b style="min-width:20px;text-align:center">${q}</b><button class="step plus" data-add="${p.id}" aria-label="Agregar uno">+</button></div>`;
+      return `<div class="card" style="align-items:stretch">${photo(p)}<div class="info"><div class="pname">${p.name}</div><div class="small">${p.desc}</div><div class="small">Porción: ${p.porcion}</div><div class="row" style="margin-top:4px"><b>${p.precio}</b>${action}</div></div></div>`;
+    }).join('')}`;
+  if (s === 'pedido') return `
+    <h1>Tu pedido</h1>
+    <div class="box" style="padding:6px 14px">
+      ${PRODUCTS.filter(p=>S.cart[p.id]).map(p=>`<div class="line"><span>${S.cart[p.id]} × ${p.name}</span><b>${p.precio}</b></div>`).join('')}
+      <div class="row" style="padding:12px 0 8px;font-weight:700;font-size:16px"><span>Total</span><span>${NEGOCIO.total}</span></div>
+    </div>
+    <b>¿Cómo lo recibes?</b>
+    <div class="grid2"><button class="pill ${S.entrega==='recoger'?'on':''}" data-entrega="recoger">Recojo en el local</button><button class="pill ${S.entrega==='domicilio'?'on':''}" data-entrega="domicilio">Domicilio</button></div>
+    <div class="tips">
+      <div class="tip">${ic.clock}<span><b>Tiempo estimado:</b> ${NEGOCIO.tiempo} minutos. Te lo confirmamos al recibir el pedido.</span></div>
+      <div class="tip">${ic.card}<span><b>Pago:</b> ${NEGOCIO.pago}. No pedimos pago anticipado sin antes confirmarte el pedido.</span></div>
+      <div class="tip">${ic.cal}<span><b>¿Es para un evento?</b> Pídelo con ${NEGOCIO.anticipacion} días de anticipación.</span></div>
+    </div>
+    <button class="btn" data-go="confirmado">Enviar pedido</button>`;
+  if (s === 'confirmado') return `
+    <div class="check">${ic.ok}</div>
+    <h1 class="center">¡Pedido recibido!</h1>
+    <p class="lead center">Tu pedido quedó registrado. En menos de 10 minutos te confirmamos la hora exacta de entrega.</p>
+    <div class="box" style="gap:14px"><b>Estado de tu pedido</b>
+      <div class="status"><span class="dot done">1</span><b>Recibido</b></div>
+      <div class="status"><span class="dot now">2</span>En preparación</div>
+      <div class="status" style="color:var(--muted)"><span class="dot">3</span>En camino / listo para recoger</div>
+      <div class="status" style="color:var(--muted)"><span class="dot">4</span>Entregado</div>
+    </div>
+    <button class="btn alt" data-reset="1">Volver al inicio</button>`;
+  if (s === 'info') return `
+    <h1>Pagos y entregas</h1>
+    <div class="box"><b>Cómo pedir</b><div class="small" style="font-size:14px">1. Mira lo disponible hoy o el catálogo.<br>2. Arma tu pedido y elige cómo recibirlo.<br>3. Te confirmamos en menos de 10 minutos.</div></div>
+    <div class="box"><b>Pagos</b><div class="small" style="font-size:14px">${NEGOCIO.pago}. Solo pagas cuando tu pedido ya está confirmado.</div></div>
+    <div class="box"><b>Entregas</b><div class="small" style="font-size:14px">Domicilio en ${NEGOCIO.cobertura} por ${NEGOCIO.domicilio}. Tiempo estimado: ${NEGOCIO.tiempo} minutos.</div></div>
+    <div class="box"><b>Pedidos para eventos</b><div class="small" style="font-size:14px">Tortas y postres para celebraciones con ${NEGOCIO.anticipacion} días de anticipación.</div></div>
+    <button class="btn" data-go="catalogo">Ver catálogo</button>`;
+}
+
+function render(){
+  const s = S.screen, n = count();
+  document.getElementById('app').innerHTML = `
+    <header>
+      ${s!=='chat' ? `<button class="back" data-back="1" aria-label="Volver">${ic.back}</button>` : ''}
+      <div class="avatar">L</div>
+      <div><div class="hname">Café y Postres Lula</div><div class="hsub">Cuenta de empresa · Respondemos en menos de 10 min</div></div>
+    </header>
+    <main>${screens()}</main>
+    ${n>0 && (s==='hoy'||s==='catalogo') ? `<footer><button class="btn dark" data-go="pedido">Ver mi pedido (${n})</button></footer>` : ''}`;
+  document.querySelector('main').scrollTop = 0;
+}
+
+document.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  const d = b.dataset;
+  if (d.go) S.screen = d.go;
+  if (d.back) S.screen = S.screen==='pedido' ? 'catalogo' : 'chat';
+  if (d.add) S.cart[d.add] = (S.cart[d.add]||0) + 1;
+  if (d.sub) S.cart[d.sub] = Math.max(0,(S.cart[d.sub]||0) - 1);
+  if (d.entrega) S.entrega = d.entrega;
+  if (d.reset) { S.screen='chat'; S.cart={}; S.entrega='recoger'; }
+  if (S.screen==='pedido' && count()===0) S.screen='catalogo';
+  const keepScroll = d.add || d.sub || d.entrega;
+  const y = document.querySelector('main').scrollTop;
+  render();
+  if (keepScroll) document.querySelector('main').scrollTop = y;
+});
+
+render();
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>
